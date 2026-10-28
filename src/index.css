@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root,
+html.light {
+  --bg-page: #faf9f6;
+  --bg-card: rgba(255, 255, 255, 0.95);
+  --border-card: rgba(0, 0, 0, 0.09);
+  --border-section: rgba(0, 0, 0, 0.08);
+  --text-heading: #0a0a0a;
+  --text-body: #404040;
+  --text-muted: #737373;
+  --badge-bg: rgba(0, 0, 0, 0.05);
+  --badge-border: rgba(0, 0, 0, 0.1);
+  --btn-bg: #0a0a0a;
+  --btn-text: #ffffff;
+  --btn-hover: #262626;
+  --shadow-card: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+  --input-bg: rgba(0, 0, 0, 0.03);
+  --input-border: rgba(0, 0, 0, 0.12);
+  --input-focus: #000000;
+}
+
+html.dark {
+  --bg-page: #000000;
+  --bg-card: rgba(14, 14, 14, 0.85);
+  --border-card: rgba(255, 255, 255, 0.12);
+  --border-section: rgba(255, 255, 255, 0.08);
+  --text-heading: #ffffff;
+  --text-body: #d4d4d4;
+  --text-muted: #8a8a8a;
+  --badge-bg: rgba(255, 255, 255, 0.05);
+  --badge-border: rgba(255, 255, 255, 0.12);
+  --btn-bg: #ffffff;
+  --btn-text: #000000;
+  --btn-hover: #e5e5e5;
+  --shadow-card: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --input-border: rgba(255, 255, 255, 0.12);
+  --input-focus: #ffffff;
+}
+
+@layer base {
+  html {
+    scroll-behavior: auto; /* Lenis handles smooth scrolling */
+  }
+
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-heading);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    overflow-x: hidden;
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+
+  /* Monochromatic scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  html.dark ::-webkit-scrollbar-track {
+    background: #000000;
+  }
+  html.dark ::-webkit-scrollbar-thumb {
+    background: #262626;
+    border-radius: 9999px;
+  }
+  html.dark ::-webkit-scrollbar-thumb:hover {
+    background: #404040;
+  }
+
+  html.light ::-webkit-scrollbar-track {
+    background: #faf9f6;
+  }
+  html.light ::-webkit-scrollbar-thumb {
+    background: #d4d4d4;
+    border-radius: 9999px;
+  }
+  html.light ::-webkit-scrollbar-thumb:hover {
+    background: #a3a3a3;
+  }
+}
+
+/* Luxury Monochromatic Glass Panels */
+.glass-panel {
+  background: var(--bg-card) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-card) !important;
+  box-shadow: var(--shadow-card) !important;
+  color: var(--text-heading) !important;
+  transition: background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, transform 0.2s ease;
+}
+
+.badge-luxury {
+  background: var(--badge-bg);
+  border: 1px solid var(--badge-border);
+  color: var(--text-heading);
+}
+
+.btn-luxury {
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  transition: all 0.25s ease;
+}
+.btn-luxury:hover {
+  background-color: var(--btn-hover);
+  transform: scale(1.02);
+}
