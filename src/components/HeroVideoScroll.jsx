@@ -34,6 +34,12 @@ export default function HeroVideoScroll() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
 
+  // Synchronous refs to prevent React state closure/re-render feedback loops
+  const isAutoPlayingRef = useRef(false);
+  const isMutedRef = useRef(false);
+  isAutoPlayingRef.current = isAutoPlaying;
+  isMutedRef.current = isMuted;
+
   // Render a specific frame onto the high-DPI canvas with 'object-fit: cover'
   const renderFrame = useCallback((frameIndex) => {
     const canvas = canvasRef.current;
@@ -132,7 +138,7 @@ export default function HeroVideoScroll() {
     bgAudio.muted = false;
 
     const startBgAudio = () => {
-      if (bgAudio && bgAudio.paused && !isAutoPlaying && !isMuted) {
+      if (bgAudio && bgAudio.paused && !isAutoPlayingRef.current && !isMutedRef.current) {
         bgAudio.play().catch(() => {
           // Awaiting user gesture per browser policy
         });
@@ -165,9 +171,10 @@ export default function HeroVideoScroll() {
     return () => {
       cleanup();
     };
-  }, [isAutoPlaying, isMuted]);
+  }, []);
 
   // Master GSAP ScrollTrigger timeline (Ultra-smooth GPU scrubbing on user scroll)
+  // IMPORTANT: Kept stable so clicking buttons NEVER destroys or re-creates ScrollTrigger
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -179,16 +186,12 @@ export default function HeroVideoScroll() {
         end: 'bottom bottom',
         scrub: 0.6,
         onUpdate: (self) => {
-          // If the user scrolls while auto-play is running, pause auto-play and switch back to manual scrubbing
-          if (isAutoPlaying) {
-            setIsAutoPlaying(false);
-            if (videoAudioRef.current) videoAudioRef.current.pause();
-            if (!isMuted && bgAudioRef.current) bgAudioRef.current.play().catch(() => {});
+          // If auto-play is NOT running, scrub frames according to scroll position
+          if (!isAutoPlayingRef.current) {
+            const p = self.progress;
+            const targetFrame = Math.round(1 + p * (TOTAL_FRAMES - 1));
+            renderFrame(targetFrame);
           }
-
-          const p = self.progress;
-          const targetFrame = Math.round(1 + p * (TOTAL_FRAMES - 1));
-          renderFrame(targetFrame);
         },
         onLeave: () => {
           // Pause all audios when scrolled past the hero section
@@ -197,7 +200,7 @@ export default function HeroVideoScroll() {
         },
         onEnterBack: () => {
           // Resume background audio when scrolling back up into hero
-          if (!isMuted && !isAutoPlaying && bgAudioRef.current && bgAudioRef.current.paused) {
+          if (!isMutedRef.current && !isAutoPlayingRef.current && bgAudioRef.current && bgAudioRef.current.paused) {
             bgAudioRef.current.play().catch(() => {});
           }
         },
@@ -207,7 +210,31 @@ export default function HeroVideoScroll() {
     return () => {
       tl.kill();
     };
-  }, [isAutoPlaying, isMuted, renderFrame]);
+  }, [renderFrame]);
+
+  // If the user physically scrolls with wheel or touch during auto-play, smoothly yield back to scroll control
+  useEffect(() => {
+    const handlePhysicalScroll = () => {
+      if (isAutoPlayingRef.current) {
+        setIsAutoPlaying(false);
+        isAutoPlayingRef.current = false;
+        if (videoAudioRef.current && !videoAudioRef.current.paused) {
+          videoAudioRef.current.pause();
+        }
+        if (!isMutedRef.current && bgAudioRef.current) {
+          bgAudioRef.current.play().catch(() => {});
+        }
+      }
+    };
+
+    window.addEventListener('wheel', handlePhysicalScroll, { passive: true });
+    window.addEventListener('touchmove', handlePhysicalScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('wheel', handlePhysicalScroll);
+      window.removeEventListener('touchmove', handlePhysicalScroll);
+    };
+  }, []);
 
   // High-precision Auto-Play Loop (Active ONLY when user clicks "Auto Play")
   useEffect(() => {
@@ -222,7 +249,13 @@ export default function HeroVideoScroll() {
     const frameInterval = 1000 / targetFps;
 
     const playLoop = (now) => {
-      if (videoAudio && !videoAudio.paused && videoAudio.duration && !isNaN(videoAudio.duration)) {
+      if (
+        videoAudio &&
+        !videoAudio.paused &&
+        videoAudio.duration &&
+        !isNaN(videoAudio.duration) &&
+        videoAudio.duration > 0
+      ) {
         // High-precision sync: video frames driven directly by original video audio hardware clock
         const audioProgress = videoAudio.currentTime / videoAudio.duration;
         const targetFrame = Math.min(
@@ -233,17 +266,18 @@ export default function HeroVideoScroll() {
           renderFrame(targetFrame);
         }
 
-        if (videoAudio.ended || videoAudio.currentTime >= videoAudio.duration) {
+        if (videoAudio.ended || videoAudio.currentTime >= videoAudio.duration - 0.05) {
           // Completed intro sequence: pause video audio, resume background audio
           setIsAutoPlaying(false);
+          isAutoPlayingRef.current = false;
           videoAudio.pause();
-          if (!isMuted && bgAudioRef.current) {
+          if (!isMutedRef.current && bgAudioRef.current) {
             bgAudioRef.current.play().catch(() => {});
           }
           return;
         }
       } else {
-        // Fallback pacing if audio buffering
+        // Smooth frame advance while waiting for audio or during audio playback
         const delta = now - lastTime;
         if (delta >= frameInterval) {
           lastTime = now - (delta % frameInterval);
@@ -252,7 +286,8 @@ export default function HeroVideoScroll() {
             renderFrame(nextFrame);
           } else {
             setIsAutoPlaying(false);
-            if (!isMuted && bgAudioRef.current) {
+            isAutoPlayingRef.current = false;
+            if (!isMutedRef.current && bgAudioRef.current) {
               bgAudioRef.current.play().catch(() => {});
             }
             return;
@@ -267,76 +302,92 @@ export default function HeroVideoScroll() {
     return () => {
       if (animFrameIdRef.current) cancelAnimationFrame(animFrameIdRef.current);
     };
-  }, [isAutoPlaying, isMuted, renderFrame]);
+  }, [isAutoPlaying, renderFrame]);
 
   // Toggle Auto-Play (Stops background music, resumes original video audio + speech)
   const toggleAutoPlay = useCallback(() => {
-    setIsAutoPlaying((prev) => {
-      const nextState = !prev;
-      const bgAudio = bgAudioRef.current;
-      const videoAudio = videoAudioRef.current;
+    const bgAudio = bgAudioRef.current;
+    const videoAudio = videoAudioRef.current;
 
-      if (nextState) {
-        // 1. Pause default background audio
-        if (bgAudio && !bgAudio.paused) {
-          bgAudio.pause();
-        }
+    if (!isAutoPlayingRef.current) {
+      // 1. Enable autoplay state immediately
+      setIsAutoPlaying(true);
+      isAutoPlayingRef.current = true;
 
-        // 2. Start original video audio in sync with speech & scenes
-        if (videoAudio) {
-          videoAudio.muted = isMuted;
-          videoAudio.volume = 1.0;
-
-          // If at or near the end, restart from frame 1
-          if (currentFrameRef.current >= TOTAL_FRAMES - 5) {
-            currentFrameRef.current = 1;
-            renderFrame(1);
-            videoAudio.currentTime = 0;
-          } else if (videoAudio.duration && !isNaN(videoAudio.duration)) {
-            const progress = (currentFrameRef.current - 1) / (TOTAL_FRAMES - 1);
-            videoAudio.currentTime = progress * videoAudio.duration;
-          }
-
-          videoAudio.play().catch((err) => {
-            console.warn('Video audio play:', err);
-          });
-        }
-      } else {
-        // Pause video audio
-        if (videoAudio && !videoAudio.paused) {
-          videoAudio.pause();
-        }
-        // Resume background ambient audio
-        if (bgAudio && !isMuted) {
-          bgAudio.play().catch(() => {});
-        }
+      // 2. Pause default background audio
+      if (bgAudio && !bgAudio.paused) {
+        bgAudio.pause();
       }
 
-      return nextState;
-    });
-  }, [isMuted, renderFrame]);
+      // 3. Start original video audio in sync with speech & scenes
+      if (videoAudio) {
+        videoAudio.muted = isMutedRef.current;
+        videoAudio.volume = 1.0;
+
+        // If at or near the end, restart from frame 1
+        if (currentFrameRef.current >= TOTAL_FRAMES - 5) {
+          currentFrameRef.current = 1;
+          renderFrame(1);
+          videoAudio.currentTime = 0;
+        } else if (videoAudio.duration && !isNaN(videoAudio.duration) && videoAudio.duration > 0) {
+          const progress = (currentFrameRef.current - 1) / (TOTAL_FRAMES - 1);
+          videoAudio.currentTime = progress * videoAudio.duration;
+        }
+
+        const playPromise = videoAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err) => {
+            console.warn('Video audio play error:', err);
+          });
+        }
+      }
+    } else {
+      // Pause Auto Play
+      setIsAutoPlaying(false);
+      isAutoPlayingRef.current = false;
+
+      // Pause video audio
+      if (videoAudio && !videoAudio.paused) {
+        videoAudio.pause();
+      }
+
+      // Resume background ambient audio if unmuted
+      if (bgAudio && !isMutedRef.current) {
+        bgAudio.play().catch(() => {});
+      }
+    }
+  }, [renderFrame]);
 
   // Toggle Sound Mute / Unmute
   const toggleMute = useCallback((e) => {
     e?.stopPropagation();
-    setIsMuted((prev) => {
-      const nextMuted = !prev;
-      const bgAudio = bgAudioRef.current;
-      const videoAudio = videoAudioRef.current;
+    const bgAudio = bgAudioRef.current;
+    const videoAudio = videoAudioRef.current;
+
+    setIsMuted((prevMuted) => {
+      const nextMuted = !prevMuted;
+      isMutedRef.current = nextMuted;
 
       if (bgAudio) bgAudio.muted = nextMuted;
       if (videoAudio) videoAudio.muted = nextMuted;
 
       if (!nextMuted) {
-        if (isAutoPlaying) {
-          if (videoAudio && videoAudio.paused) videoAudio.play().catch(() => {});
+        // Unmuting: make sure the appropriate active audio is playing
+        if (isAutoPlayingRef.current) {
+          if (videoAudio && videoAudio.paused) {
+            videoAudio.volume = 1.0;
+            videoAudio.play().catch(() => {});
+          }
         } else {
-          if (bgAudio && bgAudio.paused) bgAudio.play().catch(() => {});
+          if (bgAudio && bgAudio.paused) {
+            bgAudio.volume = 0.5;
+            bgAudio.play().catch(() => {});
+          }
         }
       }
       return nextMuted;
     });
-  }, [isAutoPlaying]);
+  }, []);
 
   return (
     <section
@@ -345,7 +396,7 @@ export default function HeroVideoScroll() {
       className="relative w-full bg-black"
       style={{ height: '650vh' }}
     >
-      {/* 1. Default Background Audio Track (User can paste custom MP3 at /public/audio/bg_music.mp3) */}
+      {/* 1. Default Background Audio Track (/public/audio/bg_music.mp3) */}
       <audio
         ref={bgAudioRef}
         src="/audio/bg_music.mp3"
@@ -375,23 +426,24 @@ export default function HeroVideoScroll() {
           <div className="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-t from-[#faf9f6] dark:from-[#000000] to-transparent pointer-events-none transition-colors duration-400" />
         </div>
 
-        {/* Minimal Professional Bottom-Left Controls (No AI Slop, Pure Studio Aesthetic) */}
-        <div className="absolute bottom-6 left-6 z-20 pointer-events-auto flex items-center gap-2">
+        {/* Minimal Professional Bottom-Left Controls (High z-index, pointer-events-auto) */}
+        <div className="absolute bottom-6 left-6 z-30 pointer-events-auto flex items-center gap-2">
           {/* Very Small, Clean Auto Play Button */}
           <button
+            type="button"
             onClick={toggleAutoPlay}
             title={isAutoPlaying ? "Pause Video Motion" : "Auto Play Cinematic Sequence"}
             aria-label={isAutoPlaying ? "Pause Video Motion" : "Auto Play Cinematic Sequence"}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/80 hover:bg-zinc-900 text-zinc-300 hover:text-white border border-white/10 hover:border-white/25 backdrop-blur-md transition-all text-[11px] font-mono tracking-wider shadow-lg shadow-black/40 cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/85 hover:bg-zinc-900 text-zinc-300 hover:text-white border border-white/15 hover:border-white/30 backdrop-blur-md transition-all text-[11px] font-mono tracking-wider shadow-lg shadow-black/60 cursor-pointer active:scale-95"
           >
             {isAutoPlaying ? (
               <>
-                <Pause className="w-3 h-3 text-zinc-400" />
+                <Pause className="w-3 h-3 text-zinc-300" />
                 <span>Pause</span>
               </>
             ) : (
               <>
-                <Play className="w-3 h-3 text-zinc-400 fill-zinc-400" />
+                <Play className="w-3 h-3 text-zinc-300 fill-zinc-300" />
                 <span>Auto Play</span>
               </>
             )}
@@ -399,10 +451,11 @@ export default function HeroVideoScroll() {
 
           {/* Very Small, Clean Mute / Unmute Button */}
           <button
+            type="button"
             onClick={toggleMute}
             title={isMuted ? "Unmute Audio" : "Mute Audio"}
             aria-label={isMuted ? "Unmute Audio" : "Mute Audio"}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/80 hover:bg-zinc-900 text-zinc-300 hover:text-white border border-white/10 hover:border-white/25 backdrop-blur-md transition-all text-[11px] font-mono tracking-wider shadow-lg shadow-black/40 cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/85 hover:bg-zinc-900 text-zinc-300 hover:text-white border border-white/15 hover:border-white/30 backdrop-blur-md transition-all text-[11px] font-mono tracking-wider shadow-lg shadow-black/60 cursor-pointer active:scale-95"
           >
             {isMuted ? (
               <>
