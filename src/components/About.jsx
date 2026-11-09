@@ -1,6 +1,5 @@
 import React from 'react';
 import { Code2, Cpu, Rocket, Sparkles, Terminal, Award } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
 
 export default function About() {
   const stats = [
@@ -16,18 +15,6 @@ export default function About() {
       className="relative py-24 sm:py-32 px-4 sm:px-8 bg-[var(--bg-page)] text-[var(--text-heading)] transition-colors duration-350 border-t border-[var(--border-section)]"
     >
       <div className="max-w-6xl mx-auto">
-        {/* ========================================================
-            THRESHOLD CONTROL: Day/Night Toggle Just After Scrolling Page
-           ======================================================== */}
-        <div className="flex flex-col items-center justify-center mb-16 sm:mb-20">
-          <div className="mb-4">
-            <ThemeToggle />
-          </div>
-          <span className="text-[11px] font-mono tracking-[0.25em] uppercase text-[var(--text-muted)]">
-            Select Visual Mode
-          </span>
-        </div>
-
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-16 sm:mb-20">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-luxury text-xs font-mono mb-6 tracking-wider">
