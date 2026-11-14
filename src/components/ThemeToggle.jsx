@@ -83,7 +83,7 @@ export default function ThemeToggle({ className = '' }) {
           THE KNOT / THUMB (Moon in Dark Mode, Sun in Light Mode)
          ========================================================= */}
       <div
-        className={`relative z-10 w-[30px] h-[30px] rounded-full transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+        className={`relative z-10 w-[30px] h-[30px] rounded-full transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           isDark
             ? 'translate-x-0 bg-white shadow-[0_0_16px_3px_rgba(255,255,255,0.9),0_0_4px_1px_rgba(255,255,255,1)]'
             : 'translate-x-[40px] bg-[#ffd538] shadow-[0_0_14px_rgba(255,213,56,0.85)]'

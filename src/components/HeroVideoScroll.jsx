@@ -434,7 +434,7 @@ export default function HeroVideoScroll() {
             onClick={toggleAutoPlay}
             title={isAutoPlaying ? "Pause Video Motion" : "Auto Play Cinematic Sequence"}
             aria-label={isAutoPlaying ? "Pause Video Motion" : "Auto Play Cinematic Sequence"}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/85 hover:bg-zinc-900 text-zinc-300 hover:text-white border border-white/15 hover:border-white/30 backdrop-blur-md transition-all text-[11px] font-mono tracking-wider shadow-lg shadow-black/60 cursor-pointer active:scale-95"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/85 hover:bg-zinc-900 text-zinc-300 hover:text-white border border-white/15 hover:border-white/30 backdrop-blur-md transition-colors duration-200 ease-out text-[11px] font-mono tracking-wider shadow-lg shadow-black/60 cursor-pointer active:scale-95"
           >
             {isAutoPlaying ? (
               <>
@@ -455,17 +455,17 @@ export default function HeroVideoScroll() {
             onClick={toggleMute}
             title={isMuted ? "Unmute Audio" : "Mute Audio"}
             aria-label={isMuted ? "Unmute Audio" : "Mute Audio"}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/85 hover:bg-zinc-900 text-zinc-300 hover:text-white border border-white/15 hover:border-white/30 backdrop-blur-md transition-all text-[11px] font-mono tracking-wider shadow-lg shadow-black/60 cursor-pointer active:scale-95"
+            className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/85 hover:bg-zinc-900 text-neutral-300 hover:text-white border border-white/15 hover:border-white/30 backdrop-blur-md transition-colors duration-200 ease-out text-[11px] font-mono tracking-wider shadow-lg shadow-black/60 cursor-pointer active:scale-95"
           >
             {isMuted ? (
               <>
-                <VolumeX className="w-3 h-3 text-red-400" />
-                <span className="text-zinc-400">Unmute</span>
+                <VolumeX className="w-3 h-3 text-neutral-500 group-hover:text-white transition-colors duration-200 ease-out" />
+                <span className="text-neutral-500 group-hover:text-white transition-colors duration-200 ease-out">Unmute</span>
               </>
             ) : (
               <>
-                <Volume2 className="w-3 h-3 text-emerald-400" />
-                <span className="text-zinc-300">Mute</span>
+                <Volume2 className="w-3 h-3 text-neutral-200 group-hover:text-white transition-colors duration-200 ease-out" />
+                <span className="text-neutral-300 group-hover:text-white transition-colors duration-200 ease-out">Mute</span>
               </>
             )}
           </button>
@@ -477,7 +477,7 @@ export default function HeroVideoScroll() {
             - Change the text and styling below as you like
            ========================================================================= */}
         <div
-          className="absolute z-20 pointer-events-none select-none flex flex-col items-center gap-1.5 transition-all duration-150"
+          className="absolute z-20 pointer-events-none select-none flex flex-col items-center gap-1.5"
           style={{
             bottom: '41px',   // ⬅️ Overall distance from bottom
             right: '113px',    // ⬅️ Overall distance from right edge
@@ -492,8 +492,8 @@ export default function HeroVideoScroll() {
             className="w-full h-auto drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]"
           />
 
-          {/* Micro-Text Label Below Logo */}
-          <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-white font-semibold text-center drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] whitespace-nowrap">
+          {/* Emblem Label Below Logo */}
+          <span className="text-sm font-medium tracking-wider text-neutral-200 text-center whitespace-nowrap">
             Kishore S
           </span>
         </div>
