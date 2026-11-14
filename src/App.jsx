@@ -10,18 +10,27 @@ import { ThemeProvider } from './context/ThemeContext';
 import { initSmoothScroll } from './utils/smoothScroll';
 
 function PortfolioContent() {
-  const [showFloatingToggle, setShowFloatingToggle] = useState(false);
+  const [showThemeToggle, setShowThemeToggle] = useState(false);
 
   useEffect(() => {
     // Initialize Lenis smooth scroll & sync with GSAP
     const cleanup = initSmoothScroll();
 
-    // Show floating toggle only after scrolling past hero video
+    // Show theme toggle only once the user scrolls down to the real page (About section and beyond)
     const handleScroll = () => {
-      setShowFloatingToggle(window.scrollY > window.innerHeight * 1.5);
+      const aboutEl = document.getElementById('about');
+      if (aboutEl) {
+        const rect = aboutEl.getBoundingClientRect();
+        // Visible only when About section (the real page) enters within the viewport
+        setShowThemeToggle(rect.top <= window.innerHeight * 0.7);
+      } else {
+        setShowThemeToggle(window.scrollY > window.innerHeight * 2);
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
     return () => {
       cleanup?.();
       window.removeEventListener('scroll', handleScroll);
@@ -30,10 +39,10 @@ function PortfolioContent() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-heading)] flex flex-col font-sans transition-colors duration-350 selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
-      {/* Floating Day/Night Luxury Toggle (Available when browsing deep content) */}
+      {/* Floating Day/Night Luxury Toggle (Available once arriving at the real-page) */}
       <div
-        className={`fixed top-6 right-6 z-50 transition-all duration-500 ${
-          showFloatingToggle
+        className={`fixed top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-50 transition-all duration-500 ${
+          showThemeToggle
             ? 'opacity-100 translate-y-0 pointer-events-auto'
             : 'opacity-0 -translate-y-6 pointer-events-none'
         }`}

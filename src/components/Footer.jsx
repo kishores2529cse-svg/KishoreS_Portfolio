@@ -13,24 +13,24 @@ export default function Footer() {
   };
 
   return (
-    <footer className="py-12 px-4 sm:px-8 bg-[var(--bg-page)] text-[var(--text-muted)] transition-colors duration-350 border-t border-[var(--border-section)] text-xs">
-      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-        <div className="flex items-center gap-3">
-          <div className="w-6 h-6 rounded-full btn-luxury flex items-center justify-center font-bold text-[10px]">
+    <footer className="py-8 sm:py-12 px-4 sm:px-6 md:px-8 lg:px-10 bg-[var(--bg-page)] text-[var(--text-muted)] transition-colors duration-350 border-t border-[var(--border-section)] text-xs">
+      <div className="max-w-6xl 2xl:max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-6 text-center sm:text-left">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="w-6 h-6 rounded-full btn-luxury flex items-center justify-center font-bold text-[10px] shrink-0">
             K
           </div>
-          <div>
+          <div className="text-xs sm:text-sm">
             <span className="text-[var(--text-heading)] font-semibold">Kishore S</span>
             <span className="mx-2">•</span>
             <span>Architectural Portfolio</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-xs">
           <span>© {new Date().getFullYear()} Kishore S. All rights reserved.</span>
           <button
             onClick={scrollToTop}
-            className="p-2.5 rounded-full badge-luxury text-[var(--text-heading)] transition-all flex items-center gap-1.5 font-mono text-[11px] hover:scale-105"
+            className="p-2 sm:p-2.5 rounded-full badge-luxury text-[var(--text-heading)] transition-all flex items-center gap-1.5 font-mono text-[11px] hover:scale-105 cursor-pointer touch-manipulation shadow-sm"
             title="Scroll to top"
           >
             <span>TOP</span>

@@ -1,16 +1,32 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" class="light" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Kishore S — Creative Developer & Portfolio</title>
     <meta name="description" content="Official portfolio of Kishore S. Interactive experience, creative development, modern applications, and digital engineering." />
+    <script>
+      (function() {
+        try {
+          const theme = localStorage.getItem('ks-theme');
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+            document.documentElement.setAttribute('data-theme', 'dark');
+          } else {
+            document.documentElement.classList.add('light');
+            document.documentElement.classList.remove('dark');
+            document.documentElement.setAttribute('data-theme', 'light');
+          }
+        } catch (e) {}
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/assets/index-DNPhfxQE.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BjyuD_x6.css">
+    <script type="module" crossorigin src="/assets/index-DD7FvdN_.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BTM3Axi1.css">
   </head>
   <body class="antialiased">
     <div id="root"></div>

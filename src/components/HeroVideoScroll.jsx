@@ -421,70 +421,55 @@ export default function HeroVideoScroll() {
             ref={canvasRef}
             className="w-full h-full block"
           />
-
-          {/* Seamless Bottom Gradient Fade into About Section */}
-          <div className="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-t from-[#faf9f6] dark:from-[#000000] to-transparent pointer-events-none transition-colors duration-400" />
         </div>
 
         {/* Minimal Professional Bottom-Left Controls (High z-index, pointer-events-auto) */}
-        <div className="absolute bottom-6 left-6 z-30 pointer-events-auto flex items-center gap-2">
-          {/* Very Small, Clean Auto Play Button */}
+        <div className="absolute bottom-5 sm:bottom-6 md:bottom-8 left-4 sm:left-6 md:left-8 z-30 pointer-events-auto flex items-center gap-2">
+          {/* Clean Responsive Auto Play Button */}
           <button
             type="button"
             onClick={toggleAutoPlay}
             title={isAutoPlaying ? "Pause Video Motion" : "Auto Play Cinematic Sequence"}
             aria-label={isAutoPlaying ? "Pause Video Motion" : "Auto Play Cinematic Sequence"}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/85 hover:bg-zinc-900 text-zinc-300 hover:text-white border border-white/15 hover:border-white/30 backdrop-blur-md transition-colors duration-200 ease-out text-[11px] font-mono tracking-wider shadow-lg shadow-black/60 cursor-pointer active:scale-95"
+            className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 min-h-[36px] rounded-full bg-zinc-950/85 hover:bg-zinc-900 text-zinc-300 hover:text-white border border-white/15 hover:border-white/30 backdrop-blur-md transition-colors duration-200 ease-out text-[11px] sm:text-xs font-mono tracking-wider shadow-lg shadow-black/60 cursor-pointer active:scale-95 touch-manipulation"
           >
             {isAutoPlaying ? (
               <>
-                <Pause className="w-3 h-3 text-zinc-300" />
+                <Pause className="w-3.5 h-3.5 text-zinc-300" />
                 <span>Pause</span>
               </>
             ) : (
               <>
-                <Play className="w-3 h-3 text-zinc-300 fill-zinc-300" />
+                <Play className="w-3.5 h-3.5 text-zinc-300 fill-zinc-300" />
                 <span>Auto Play</span>
               </>
             )}
           </button>
 
-          {/* Very Small, Clean Mute / Unmute Button */}
+          {/* Clean Responsive Mute / Unmute Button */}
           <button
             type="button"
             onClick={toggleMute}
             title={isMuted ? "Unmute Audio" : "Mute Audio"}
             aria-label={isMuted ? "Unmute Audio" : "Mute Audio"}
-            className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/85 hover:bg-zinc-900 text-neutral-300 hover:text-white border border-white/15 hover:border-white/30 backdrop-blur-md transition-colors duration-200 ease-out text-[11px] font-mono tracking-wider shadow-lg shadow-black/60 cursor-pointer active:scale-95"
+            className="group flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 min-h-[36px] rounded-full bg-zinc-950/85 hover:bg-zinc-900 text-neutral-300 hover:text-white border border-white/15 hover:border-white/30 backdrop-blur-md transition-colors duration-200 ease-out text-[11px] sm:text-xs font-mono tracking-wider shadow-lg shadow-black/60 cursor-pointer active:scale-95 touch-manipulation"
           >
             {isMuted ? (
               <>
-                <VolumeX className="w-3 h-3 text-neutral-500 group-hover:text-white transition-colors duration-200 ease-out" />
+                <VolumeX className="w-3.5 h-3.5 text-neutral-500 group-hover:text-white transition-colors duration-200 ease-out" />
                 <span className="text-neutral-500 group-hover:text-white transition-colors duration-200 ease-out">Unmute</span>
               </>
             ) : (
               <>
-                <Volume2 className="w-3 h-3 text-neutral-200 group-hover:text-white transition-colors duration-200 ease-out" />
+                <Volume2 className="w-3.5 h-3.5 text-neutral-200 group-hover:text-white transition-colors duration-200 ease-out" />
                 <span className="text-neutral-300 group-hover:text-white transition-colors duration-200 ease-out">Mute</span>
               </>
             )}
           </button>
         </div>
 
-        {/* =========================================================================
-            CUSTOM STAG LOGO + LABEL
-            - Adjust bottom / right coordinates to position the whole unit
-            - Change the text and styling below as you like
-           ========================================================================= */}
-        <div
-          className="absolute z-20 pointer-events-none select-none flex flex-col items-center gap-1.5"
-          style={{
-            bottom: '41px',   // ⬅️ Overall distance from bottom
-            right: '113px',    // ⬅️ Overall distance from right edge
-            width: '60px',    // ⬅️ Logo width
-            opacity: 0.66,    // ⬅️ Transparency
-          }}
-        >
+        {/* Responsive Stag Brand Logo & Label */}
+        <div className="absolute bottom-5 sm:bottom-6 md:bottom-8 right-4 sm:right-6 md:right-10 z-20 pointer-events-none select-none flex flex-col items-center gap-1 w-12 sm:w-14 md:w-16 opacity-70">
           {/* Stag Logo */}
           <img
             src="/stag-logo.png"
@@ -493,11 +478,14 @@ export default function HeroVideoScroll() {
           />
 
           {/* Emblem Label Below Logo */}
-          <span className="text-sm font-medium tracking-wider text-neutral-200 text-center whitespace-nowrap">
+          <span className="text-[11px] sm:text-xs font-medium tracking-wider text-neutral-200 text-center whitespace-nowrap">
             Kishore S
           </span>
         </div>
       </div>
+
+      {/* Seamless Transition into Real Page (Positioned at bottom of 650vh container, invisible during video playback) */}
+      <div className="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-b from-transparent to-[#faf9f6] dark:to-[#050807] pointer-events-none z-10" />
     </section>
   );
 }

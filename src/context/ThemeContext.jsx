@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext({
-  theme: 'dark',
+  theme: 'light',
   setTheme: () => {},
   toggleTheme: () => {},
 });
@@ -9,11 +9,11 @@ const ThemeContext = createContext({
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('ks-portfolio-theme');
-      if (saved === 'light' || saved === 'dark') return saved;
-      return 'dark';
+      const saved = localStorage.getItem('ks-theme');
+      if (saved === 'dark' || saved === 'light') return saved;
+      return 'light'; // Day / Light is the default theme
     }
-    return 'dark';
+    return 'light';
   });
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export function ThemeProvider({ children }) {
       body?.classList.add('light');
       body?.classList.remove('dark');
     }
-    localStorage.setItem('ks-portfolio-theme', theme);
+    localStorage.setItem('ks-theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
