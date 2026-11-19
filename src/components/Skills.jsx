@@ -41,6 +41,11 @@ const DOMAINS_DATA = [
         isPrimary: false,
         spec: 'Adaptive fluid typography, sub-millisecond layout reflows, and ergonomic touch targets.',
       },
+      {
+        name: 'WebGL & Interactive 3D Avatars',
+        isPrimary: false,
+        spec: 'OGL/WebGL shaders, 3D avatar rendering, Web Speech TTS synthesis, and KaTeX mathematical typesetting.',
+      },
     ],
   },
   {
@@ -54,6 +59,10 @@ const DOMAINS_DATA = [
         spec: 'Enterprise service layer, MVC architecture, IoC dependency injection, and REST controllers.',
       },
       {
+        name: 'Python 3.12 & FastAPI',
+        spec: 'Asynchronous ASGI endpoints, Pydantic data schemas, document parsing, and RAG pipelines.',
+      },
+      {
         name: 'Node.js & Express',
         spec: 'Non-blocking asynchronous I/O event loops, microservices, and lean middleware chains.',
       },
@@ -63,6 +72,11 @@ const DOMAINS_DATA = [
       },
     ],
     disciplines: [
+      {
+        name: 'Document-Grounded RAG & LLMs',
+        isPrimary: true,
+        spec: 'PyPDF/python-docx ingestion, Gemini Flash & LLaMA 3.3 orchestration via OpenRouter, and cognitive adaptation loops.',
+      },
       {
         name: 'Real-Time WebSockets & Data Sync',
         isPrimary: true,

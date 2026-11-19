@@ -7,6 +7,18 @@ export default function Projects() {
 
   const projectList = [
     {
+      title: 'Humanoid AI Avatar Mentor (AdaptIQ)',
+      category: 'Applied AI & Cognitive State Machine',
+      badge: 'Top 1,000 / 5,555+ Solo',
+      video: '/projects/humanoid-ai-mentor.mp4',
+      image: '/projects/humanoid-ai-mentor-poster.jpg',
+      description:
+        'An autonomous cognitive teaching system engineered to understand how learners learn. Features a closed-loop diagnostic state machine (Diagnose → Evaluate → Detect Misconception → Adapt Pedagogy → Verify Mastery), document-grounded RAG across PDF/DOCX/PPTX, interactive 3D WebGL avatar interactions, and real-time multilingual continuity across English, Tamil, and Hindi. Engineered 100% solo, qualifying for Round 2 and placing Top 1,000 / 5,555+ in AI Innovation Hackathon 2026.',
+      tags: ['Solo Builder', 'Top 1,000 / 5,555+', 'FastAPI', 'Python 3.12', 'React 19', 'RAG Engine', 'Gemini Flash', 'LLaMA 3.3', 'WebGL Avatar', 'Vercel'],
+      github: 'https://github.com/kishores2529cse-svg/KISHORE-AI-MENTOR',
+      live: 'https://kishore-ai-mentor.vercel.app/',
+    },
+    {
       title: 'CCC ~ AI Secure System Monitoring',
       category: 'AI & Security',
       badge: 'Flagship Architecture',
@@ -130,17 +142,30 @@ export default function Projects() {
 
           {/* Right Column (7 Cols): Sticky Architectural Viewport & Dossier */}
           <div className="lg:col-span-7 lg:sticky lg:top-28 w-full">
-            {/* Viewport Screenshot Frame */}
-            <div className="aspect-[16/10] overflow-hidden rounded-xl border border-black/[0.1] dark:border-white/[0.1] bg-neutral-200 dark:bg-[#0B0E0D] relative shadow-sm">
-              <img
-                key={activeProject.image}
-                src={activeProject.image}
-                alt={activeProject.title}
-                className="w-full h-full object-cover scale-100 transition-opacity duration-300 ease-out"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
+            {/* Viewport Media Frame (Video Clip or Image) */}
+            <div className="aspect-[16/10] overflow-hidden rounded-xl border border-black/[0.1] dark:border-white/[0.1] bg-black dark:bg-[#0B0E0D] relative shadow-sm">
+              {activeProject.video ? (
+                <video
+                  key={activeProject.video}
+                  src={activeProject.video}
+                  poster={activeProject.image}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover scale-100 transition-opacity duration-300 ease-out"
+                />
+              ) : (
+                <img
+                  key={activeProject.image}
+                  src={activeProject.image}
+                  alt={activeProject.title}
+                  className="w-full h-full object-cover scale-100 transition-opacity duration-300 ease-out"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              )}
             </div>
 
             {/* Unboxed Architectural Dossier Block */}

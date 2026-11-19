@@ -17,9 +17,9 @@ const PILLARS = [
     detail: 'Render Rush 3rd Position, HackSprint\'26 Special Mention Award, and 24-hr Finalist at FORGEXAI & Hackspora.',
   },
   {
-    label: 'Applied AI & Security',
-    title: 'Assessment & Telemetry AI',
-    detail: 'Secure browser enforcement, role-based access control (RBAC), and real-time exam monitoring.',
+    label: 'Applied AI & Cognitive Systems',
+    title: 'Adaptive AI & Security',
+    detail: 'Humanoid AI Avatar Mentor (AdaptIQ), document-grounded RAG, WebGL avatar, and secure browser telemetry.',
   },
 ];
 
@@ -116,10 +116,10 @@ const ACHIEVEMENTS_LEDGER = [
     index: '09',
     category: 'hackathon',
     categoryLabel: "AI Innovation",
-    title: "AI Innovation Hackathon by Bharat Academix",
-    scope: "National Artificial Intelligence Application Prototyping",
-    architectureNote: "Engineered scalable AI workflows grounded strictly on domain data and prompt engineering.",
-    recognition: "Top 1,000 / 50,000",
+    title: "AI Innovation Hackathon 2026 by BHARATH ACADEMIX",
+    scope: "National Hackathon (3 Rounds) • Solo Developer • Qualified for Round 2",
+    architectureNote: "Engineered Humanoid AI Avatar Mentor (AdaptIQ): Closed-loop cognitive engine with document-grounded RAG, WebGL avatar, and dynamic pedagogical adaptation.",
+    recognition: "Top 1,000 / 5,555+ (Solo)",
     badgeColor: "gold",
     date: "14/08/2026",
   },
