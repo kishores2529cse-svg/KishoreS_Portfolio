@@ -64,13 +64,13 @@ export default function Projects() {
     },
     {
       title: 'CivicConnect',
-      category: 'Civic Tech',
-      badge: 'Citizen-Gov Platform',
+      category: 'Civic Tech & GovTech',
+      badge: 'Smart City Platform',
       image: '/projects/civicconnect.png',
       description:
-        'A public governance and civic empowerment platform enabling residents of the nation to report local infrastructure hazards, civic faults, and societal issues directly for prioritized government resolution.',
-      tags: ['Civic Tech', 'Citizen Portal', 'Public Infrastructure', 'Social Impact', 'GovTech'],
-      github: 'https://github.com',
+        'A comprehensive civic empowerment and municipal governance platform connecting citizens, field officers, and administrators. Features AI-powered smart issue classification, real-time GPS hazard reporting, automated officer triage dispatch, and hotspot city analytics.',
+      tags: ['Civic Tech', 'AI Smart Dispatch', 'City Analytics', 'GPS Telemetry', 'GovTech'],
+      github: 'https://github.com/kishores2529cse-svg',
       live: '#',
     },
   ];
