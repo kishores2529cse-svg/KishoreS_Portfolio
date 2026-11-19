@@ -7,6 +7,17 @@ export default function Projects() {
 
   const projectList = [
     {
+      title: 'CCC ~ AI Secure System Monitoring',
+      category: 'AI & Security',
+      badge: 'Flagship Architecture',
+      image: '/projects/ccc.png',
+      description:
+        'An AI-integrated assessment monitoring platform featuring secure browser enforcement, real-time desktop telemetry, role-based access control (RBAC), and an integrated multi-language coding environment for trustworthy evaluations.',
+      tags: ['Hackspora Finalist', 'AI Security', 'System Telemetry', 'Full-Stack', 'Vercel'],
+      github: 'https://github.com/kishores2529cse-svg/System-monitoring-frontend',
+      live: 'http://system-monitoring-phi.vercel.app/',
+    },
+    {
       title: 'Humanoid AI Avatar Mentor (AdaptIQ)',
       category: 'Applied AI & Cognitive State Machine',
       badge: 'Top 1,000 / 5,555+ Solo',
@@ -19,15 +30,15 @@ export default function Projects() {
       live: 'https://kishore-ai-mentor.vercel.app/',
     },
     {
-      title: 'CCC ~ AI Secure System Monitoring',
-      category: 'AI & Security',
-      badge: 'Flagship Architecture',
-      image: '/projects/ccc.png',
+      title: 'Placement360',
+      category: 'DBMS & Platforms',
+      badge: 'Zero Redundancy DBMS',
+      image: '/projects/Placement360.png',
       description:
-        'An AI-integrated assessment monitoring platform featuring secure browser enforcement, real-time desktop telemetry, role-based access control (RBAC), and an integrated multi-language coding environment for trustworthy evaluations.',
-      tags: ['Hackspora Finalist', 'AI Security', 'System Telemetry', 'Full-Stack', 'Vercel'],
-      github: 'https://github.com/kishores2529cse-svg/System-monitoring-frontend',
-      live: 'http://system-monitoring-phi.vercel.app/',
+        'Institutional placement management system resolving critical database integrity and redundancy challenges. Accurately tracks placed, not-placed, and non-placement student cohorts with strict relational audit trails.',
+      tags: ['DBMS', 'Data Integrity', 'Relational Normalization', 'Audit Trails', 'Vercel'],
+      github: 'https://github.com/kishores2529cse-svg/PLACEMENT_360_DBMS',
+      live: 'https://placement360dbms.vercel.app/',
     },
     {
       title: 'FFS | Fair. Flash. Sale.',
@@ -50,17 +61,6 @@ export default function Projects() {
       tags: ['GDG CIT Hackathon', 'EdTech', 'Interview Readiness', 'React', 'Vercel'],
       github: 'https://github.com/kishores2529cse-svg/placement360',
       live: 'https://placement360-mu.vercel.app/',
-    },
-    {
-      title: 'Placement360',
-      category: 'DBMS & Platforms',
-      badge: 'Zero Redundancy DBMS',
-      image: '/projects/Placement360.png',
-      description:
-        'Institutional placement management system resolving critical database integrity and redundancy challenges. Accurately tracks placed, not-placed, and non-placement student cohorts with strict relational audit trails.',
-      tags: ['DBMS', 'Data Integrity', 'Relational Normalization', 'Audit Trails', 'Vercel'],
-      github: 'https://github.com/kishores2529cse-svg/PLACEMENT_360_DBMS',
-      live: 'https://placement360dbms.vercel.app/',
     },
     {
       title: 'CivicConnect',
